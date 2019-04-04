@@ -1,18 +1,37 @@
 {
   "name": "Metricbeat",
-  "version": "0.1",
+  "version": "6.7.0",
   "slug": "metricbeat",
-  "description": "Metricbeat add-on",
+  "description": "Metricbeat metrics for your Home Assistant",
+  "url": "https://github.com/sjthespian/hassio-addon-metricbeat",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "startup": "system",
   "boot": "auto",
   "host_network": true,
-  "privileged": [ "NET_ADMIN", "SYS_ADMIN" ],
+  "docker_api": true,
+  "full_access": true,
+  "privileged": [
+    "NET_ADMIN",
+    "SYS_ADMIN",
+    "SYS_RAWIO",
+    "SYS_TIME",
+    "SYS_NICE"
+  ],
+  "devices": [
+    "/dev/mem:/dev/mem:rwm"
+  ],
   "options": {
     "elasticserach_host": "elasticsearch",
     "elasticserach_port": 9200,
     "elasticsearch_user": "",
     "elasticsearch_password": ""
   },
-  "schema": {}
+  "schema": {
+    "log_level": "match(^(trace|debug|info|notice|warning|error|fatal)$)?",
+    "elasticserach_host": "str",
+    "elasticserach_port": "port",
+    "elasticsearch_user": "str",
+    "elasticsearch_password": "str"
+  },
+  "image": "hassioaddons/metricbeat-{arch}"
 }
