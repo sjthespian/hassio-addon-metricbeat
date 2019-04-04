@@ -1,0 +1,18 @@
+{
+  "name": "Metricbeat",
+  "version": "0.1",
+  "slug": "metricbeat",
+  "description": "Metricbeat add-on",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "startup": "system",
+  "boot": "auto",
+  "host_network": true,
+  "privileged": [ "NET_ADMIN", "SYS_ADMIN" ],
+  "options": {
+    "elasticserach_host": "elasticsearch",
+    "elasticserach_port": 9200,
+    "elasticsearch_user": "",
+    "elasticsearch_password": ""
+  },
+  "schema": {}
+}
