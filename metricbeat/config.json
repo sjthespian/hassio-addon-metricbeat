@@ -4,7 +4,7 @@
   "slug": "metricbeat",
   "description": "Metricbeat metrics for your Home Assistant",
   "url": "https://github.com/sjthespian/hassio-addon-metricbeat",
-  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "arch": ["armhf", "armv7", "amd64", "i386"],
   "startup": "system",
   "boot": "auto",
   "host_network": true,
@@ -32,6 +32,5 @@
     "elasticserach_port": "port",
     "elasticsearch_user": "str",
     "elasticsearch_password": "str"
-  },
-  "image": "hassioaddons/metricbeat-{arch}"
+  }
 }

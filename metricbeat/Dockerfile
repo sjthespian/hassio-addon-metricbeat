@@ -1,18 +1,24 @@
-ARG BUILD_FROM=elastic/metricbeat:6.7.0
+ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Set shell
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+ARG BUILD_ARCH
+ARG BUILD_VERSION
 
-# Add metricbeat configuration for docker
-ADD metricbeat.docker.yml /usr/share/metricbeat/metricbeat.yml
+# Set shell
+#SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Run as root to have full access to /proc
 USER root
 
-# We need jq for options parsing in run.sh
-RUN /usr/bin/yum install --assumeyes epel-release && \
-    /usr/bin/yum install --assumeyes jq
+# run.sh needs jq for parsing options (only for testeing, hassio has this)
+RUN apk add --no-cache jq curl
+
+# Install metricbeat
+COPY install_metricbeat.sh /tmp/install_metricbeat.sh
+RUN sh /tmp/install_metricbeat.sh ${BUILD_ARCH} ${BUILD_VERSION}
+
+# Add metricbeat configuration for docker
+COPY metricbeat.docker.yml /etc/metricbeat/metricbeat.yml
 
 # Copy data for add-on
 COPY run.sh /
