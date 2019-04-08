@@ -8,11 +8,11 @@ ELASTICSEARCH_PORT=$(jq --raw-output ".elasticsearch_post" $CONFIG_PATH)
 ELASTICSEARCH_USER=$(jq --raw-output ".elasticsearch_user" $CONFIG_PATH)
 ELASTICSEARCH_PSWD=$(jq --raw-output ".elasticsearch_password" $CONFIG_PATH)
 
-ESARGS=-E output.elasticsearch.hosts=["${ELASTISEARCH_HOST}:${ELASTISEARCH_PORT}"]
+ESARGS=-E output.elasticsearch.hosts=["${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}"]
 if [ -n "$ELASTICSEARCH_USER" ]; then
-  ESARGS=${ESARGS} -E output.elasticsearch.username="${ELASTISEARCH_USER}"
+  ESARGS=${ESARGS} -E output.elasticsearch.username="${ELASTICSEARCH_USER}"
 fi
 if [ -n "$ELASTICSEARCH_PSWD" ]; then
-  ESARGS=${ESARGS} -E output.elasticsearch.password="${ELASTISEARCH_PSWD}"
+  ESARGS=${ESARGS} -E output.elasticsearch.password="${ELASTICSEARCH_PSWD}"
 fi
 metricbeat -e ${ESARGS}

@@ -1,0 +1,10 @@
+{
+    "squash": false,
+    "build_from": {
+        "amd64": "hassioaddons/ubuntu-base:3.0.0",
+        "armhf": "hassioaddons/ubuntu-base:3.0.0",
+        "armv7": "hassioaddons/ubuntu-base:3.0.0",
+        "i386": "hassioaddons/ubuntu-base:3.0.0"
+    },
+    "args": {}
+}

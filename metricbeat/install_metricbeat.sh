@@ -10,11 +10,11 @@ UNTARDIR=/tmp
 case ${BUILD_ARCH} in
   amd64)
     curl -s -o /tmp/metricbeat.tgz https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-${BUILD_VERSION}-linux-x86_64.tar.gz
-    apk add gcompat	# Needed for linux binary on alpine
+#    apk add gcompat	# Needed for linux binary on alpine
     ;;
   i386)
     curl -s -o /tmp/metricbeat.tgz https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-${BUILD_VERSION}-linux-x86.tar.gz
-    apk add gcompat	# Needed for linux binary on alpine
+#    apk add gcompat	# Needed for linux binary on alpine
     ;;
   armv7|armhf)
     curl -s o /tmp/metricbeat.tgz http://mirror.archlinuxarm.org/armv7h/community/metricbeat-${BUILD_VERSION}-1-armv7h.pkg.tar.xz
@@ -32,14 +32,20 @@ if [ ! -f metricbeat.tgz ]; then
   exit 1
 fi
 
+tarcp() {
+  tar cf - $1 | ( cd $2; tar xfp - )
+}
+
 # Untar and install metricbeat - use the same layout as the deb package
 tar xf metricbeat.tgz -C $UNTARDIR
 cd metricbeat-${BUILD_VERSION}*
 mkdir /etc/metricbeat/ /usr/share/metricbeat/
 cp metricbeat /usr/bin/
-find kibana -print | cpio -pdm /usr/share/metricbeat/
+#find kibana -print | cpio -pdm /usr/share/metricbeat/
+tarcp kibana /usr/share/metricbeat/
 cp *.txt /usr/share/metricbeat/
-find modules.d -print | cpio -pdm /etc/metricbeat/
+#find modules.d -print | cpio -pdm /etc/metricbeat/
+tarcp modules.d /etc/metricbeat/
 cp *.yml /etc/metricbeat/
 
 # Cleanup after install
