@@ -13,19 +13,21 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Run as root to have full access to /proc
 USER root
 
-# The installer needs curl
-RUN apt-get -y install curl
+## The installer needs xz to extract ArchLinux package
+RUN apt-get update && apt-get -y install xz-utils
 
 # Install metricbeat
 COPY install_metricbeat.sh /tmp/install_metricbeat.sh
-RUN sh /tmp/install_metricbeat.sh ${BUILD_ARCH} ${BUILD_VERSION}
+RUN sh /tmp/install_metricbeat.sh ${BUILD_ARCH} ${BUILD_VERSION} &&\
+    rm /tmp/install_metricbeat.sh
 
-# Add metricbeat configuration for docker
+# Add metricbeat configuration for docker and start script
 COPY metricbeat.docker.yml /etc/metricbeat/metricbeat.yml
+COPY metricbeat.bin /usr/bin/metricbeat
 
 # Copy start script
 COPY run.sh /
-RUN chmod a+x /run.sh
+RUN chmod a+x /run.sh /usr/bin/metricbeat
 
 CMD [ "/run.sh" ]
 
